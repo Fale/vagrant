@@ -1,4 +1,4 @@
-N = 3 
+N = 5 
 
 Vagrant::configure("2") do |config|
     (0..N-1).each do |machine_id|
