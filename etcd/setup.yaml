@@ -2,6 +2,11 @@
 - name: Configure properly etcd
   hosts: all
   tasks:
+    - name: Ensure that all packages are updated
+      yum:
+        name: '*'
+        state: latest
+      become: True
     - name: Ensure that etcd is present
       yum:
         name: etcd
