@@ -2,29 +2,33 @@
 - hosts: all
   name: Install Ansible Tower
   vars:
-    version: '3.1.4'
+    version: '3.1.5'
   tasks:
     - name: Ensure EPEL is enabled
       yum:
         name: epel-release
         state: present
       become: True
-    - name: Set hostname
+    - name: Ensure hostname is properly set
       hostname:
         name: '{{ inventory_hostname }}' 
       become: True
-    - get_url:
+    - name: Ensure Ansible Tower installer is present
+      get_url:
         url: 'http://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-{{ version }}.tar.gz'
         dest: '/tmp/ansible-tower-setup-{{ version }}.tar.gz'
-    - unarchive:
+    - name: Ensure unarchived version of Tower is present
+      unarchive:
         remote_src: True
         src: '/tmp/ansible-tower-setup-{{ version }}.tar.gz'
         dest: /tmp
-    - copy:
+    - name: Ensure inventory file is properly located
+      copy:
         remote_src: True
         dest: '/tmp/ansible-tower-setup-{{ version }}/inventory'
         src: /vagrant/inventory
-    - shell: ./setup.sh
+    - name: Run the Ansible Tower installer
+      shell: ./setup.sh
       args:
         chdir: '/tmp/ansible-tower-setup-{{ version }}'
       become: True
