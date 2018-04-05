@@ -1,0 +1,21 @@
+---
+- hosts: all
+  name: Install Ansible
+  tasks:
+    - name: Ensure EPEL is enabled
+      yum:
+        name: epel-release
+        state: present
+      become: True
+    - name: Set hostname
+      hostname:
+        name: '{{ inventory_hostname }}' 
+      become: True
+- hosts: core
+  name: Install Ansible
+  tasks:
+    - name: Ensure Ansible is enabled
+      yum:
+        name: ansible
+        state: present
+      become: True

@@ -1,0 +1,13 @@
+---
+- hosts: all
+  name: Basic config
+  tasks:
+    - name: Ensure EPEL is enabled
+      yum:
+        name: epel-release
+        state: present
+      become: True
+    - name: Set hostname
+      hostname:
+        name: '{{ inventory_hostname }}' 
+      become: True

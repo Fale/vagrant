@@ -1,0 +1,30 @@
+Vagrant.configure(2) do |config|
+
+    # Set machine size
+    config.vm.provider :libvirt do |domain|
+        domain.memory = 2048
+        domain.cpus = 1
+    end
+
+N = 3
+(1..N).each do |machine_id|
+  config.vm.define "machine#{machine_id}" do |machine|
+    machine.vm.box = "centos/7"
+    machine.vm.hostname = "machine#{machine_id}"
+    machine.vm.network "private_network", ip: "192.168.77.#{20+machine_id}"
+
+    # Only execute once the Ansible provisioner,
+    # when all the machines are up and ready.
+    if machine_id == N
+      machine.vm.provision :ansible do |ansible|
+        # Disable default limit to connect to all the machines
+        ansible.limit = "all"
+        ansible.playbook = "playbook.yml"
+        ansible.groups = {
+            "core" => ["ansible.redhat.fale.io"],
+            "servers" => ["s[1:3].redhat.fale.io"],
+        }
+      end
+    end
+  end
+end
