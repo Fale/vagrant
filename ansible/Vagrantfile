@@ -1,0 +1,40 @@
+Vagrant.configure(2) do |config|
+
+    # Set machine size
+    config.vm.provider :libvirt do |domain|
+        domain.memory = 2048
+        domain.cpus = 1
+    end
+
+    config.vm.define "tower1.redhat.fale.io" do |tower1|
+        tower1.vm.box = "centos/7"
+    end
+
+    config.vm.define "tower2.redhat.fale.io" do |tower2|
+        tower2.vm.box = "centos/7"
+    end
+
+    config.vm.define "tower3.redhat.fale.io" do |tower3|
+        tower3.vm.box = "centos/7"
+    end
+
+    config.vm.define "pgsql1.redhat.fale.io" do |pgsql1|
+        pgsql1.vm.box = "centos/7"
+    end
+
+    # Secondary Database
+    #config.vm.define "pgsql2" do |pgsql2|
+    #    pgsql2.vm.box = "centos/7"
+    #end
+
+    config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "playbook.yaml"
+        ansible.groups = {
+            "tower" => ["tower[1:3].redhat.fale.io"],
+            "pgsql-master" => ["pgsql1.redhat.fale.io"],
+     #       "pgsql-slave" => ["pgsql2"],
+            "pgsql:children" => ["pgsql-master", "pgsql-slave"],
+    }
+    end
+
+end

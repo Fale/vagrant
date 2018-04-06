@@ -1,0 +1,26 @@
+[tower]
+tower1.redhat.fale.io
+tower2.redhat.fale.io
+tower3.redhat.fale.io
+
+[database]
+pgsql1.redhat.fale.io
+
+[all:vars]
+admin_password='admin'
+
+pg_host='pgsql1.redhat.fale.io'
+pg_port='5432'
+
+pg_database='awx'
+pg_username='awx'
+pg_password='tower'
+
+rabbitmq_port=5672
+rabbitmq_vhost=tower
+rabbitmq_username=tower
+rabbitmq_password='tower'
+rabbitmq_cookie=cookiemonster
+
+# Needs to be true for fqdns and ip addresses
+rabbitmq_use_long_name=true

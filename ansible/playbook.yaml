@@ -1,0 +1,22 @@
+---
+- hosts: all
+  name: Install Ansible Tower
+  vars:
+    version: '3.1.2'
+  tasks:
+    - name: Ensure EPEL is enabled
+      yum:
+        name: epel-release
+        state: present
+      become: True
+    - name: Set hostname
+      hostname:
+        name: '{{ inventory_hostname }}' 
+      become: True
+    - name: Ensure hosts resolve locally
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
+        line: "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}    {{ hostvars[item]['inventory_hostname'] }}"
+      become: True
+      with_items: "{{ groups['all'] }}"
