@@ -2,23 +2,13 @@
 localhost ansible_connection=local
 
 [database]
-localhost ansible_connection=local
 
 [all:vars]
-admin_password='admin'
+admin_password='password'
 
-pg_host='localhost'
-pg_port='5432'
+pg_host=''
+pg_port=''
 
 pg_database='awx'
 pg_username='awx'
-pg_password='tower'
-
-rabbitmq_port=5672
-rabbitmq_vhost=tower
-rabbitmq_username=tower
-rabbitmq_password='tower'
-rabbitmq_cookie=cookiemonster
-
-# Needs to be true for fqdns and ip addresses
-rabbitmq_use_long_name=false
+pg_password='password'
