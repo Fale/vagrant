@@ -2,7 +2,7 @@
 - hosts: all
   name: Install Ansible Tower
   vars:
-    version: '3.2.0'
+    version: '3.7.2-1'
   tasks:
     - name: Ensure EPEL is enabled
       yum:
